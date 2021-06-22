@@ -3,7 +3,6 @@ const is_empty = require("./is_empty")
 
 module.exports = function validatorRegisterInput(data){
     let errors = {}
-    console.log(data)
 
     data.name = !is_empty(data.name) ? data.name: ""
     data.email = !is_empty(data.email) ? data.email: ""

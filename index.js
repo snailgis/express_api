@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const db = require('./config/keys')
 
 const users = require('./routers/api/users')
+const profiles = require('./routers/api/profiles')
 
 const bodyParser = require('body-parser')
 const passport = require("passport");       //引入passport插件
@@ -33,6 +34,17 @@ mongoose.connect(db.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
 }).catch((err) => {
     console.log(err)
 })
+mongoose.set('useFindAndModify', false)
+
+// 使用中间件进行跨域必须写在使用路由之前
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin","*");         //允许的来源
+  res.header("Access-Control-Allow-Headers","Content-Type");    //请求的头部
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");  //允许请求的方法
+  next();
+})
+// 使用cors进行跨域
 
 // 使用routes
 app.use('/api/users', users)
+app.use('/api/profiles', profiles)
